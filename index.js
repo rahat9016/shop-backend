@@ -40,7 +40,7 @@ app.use(morgan("dev"));
 app.use(cors());
 app.use("/public", express.static(path.join(__dirname, "src/uploads")));
 
-app.use("/", (req, res) => {
+app.get("/", (req, res) => {
   res.status(200).json({
     message: "API is okay if you want to check",
     routes: {
