@@ -40,6 +40,16 @@ app.use(morgan("dev"));
 app.use(cors());
 app.use("/public", express.static(path.join(__dirname, "src/uploads")));
 
+app.use("/", (req, res) => {
+  res.status(200).json({
+    message: "API is okay if you want to check",
+    routes: {
+      products: "api/products",
+      category: "api/category",
+      brand: "api/get-brand",
+    },
+  });
+});
 app.use("/api", UserRouter);
 app.use("/api", CategoryRouter);
 app.use("/api", ProductRouter);
