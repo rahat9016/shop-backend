@@ -4,32 +4,31 @@ const jwt = require("jsonwebtoken");
 const User = require("../Models/User");
 exports.Signup = async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.body.email }).exec();
-    if (user) {
-      res.status(400).json({ message: "user already registered!" });
-    } else {
-      const { firstName, lastName, email, password, number } = req.body;
+    const { firstName, lastName, email, password, number } = req.body;
       const hash_password = await bcrypt.hash(password, 10);
       const _newUser = new User({
         firstName,
         lastName,
         email,
         password: hash_password,
-        number,
+        number: number,
         userName: firstName + shortid.generate(),
         role: "user",
       });
-      _newUser.save((error, data) => {
-        if (error) {
+      _newUser
+        .save()
+        .then((data) => {
+          if (data) {
+            res.status(201).json({
+              message: "user created successful",
+              user: data,
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error)
           res.status(400).json({ error: "Something went wrong ", error });
-        } else if (data) {
-          res.status(201).json({
-            message: "user created successful",
-            user: data,
-          });
-        }
-      });
-    }
+        });
   } catch (error) {
     if (error) return res.status(400).json({ error: "Something went wrong" });
   }

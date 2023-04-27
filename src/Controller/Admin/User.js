@@ -20,16 +20,19 @@ exports.signup = async (req, res) => {
           userName: firstName + shortid.generate(),
           role: "admin",
         });
-        _newUser.save((error, data) => {
-          if (error) {
-            res.status(400).json({ error: "Something went wrong ", error });
-          } else if (data) {
+        _newUser
+          .save()
+          .then((data) => {
             res.status(201).json({
               message: "Admin created successful",
               user: data,
             });
-          }
-        });
+          })
+          .catch((error) => {
+            if (error) {
+              res.status(400).json({ error: "Something went wrong ", error });
+            }
+          });
       }
     });
   } catch (error) {
