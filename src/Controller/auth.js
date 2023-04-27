@@ -70,16 +70,16 @@ exports.Signing = async (req, res) => {
         }
       } else {
         res.status(400).json({
-          error: "Invalid password!",
+          errors: "Invalid password!",
         });
       }
     } else {
       res.status(400).json({
-        error: "This is not user user",
+        errors: "This is not user",
       });
     }
   } catch (error) {
-    return res.status(400).json({ error: error });
+    return res.status(400).json({ errors: error });
   }
 };
 exports.signOut = (req, res) => {
